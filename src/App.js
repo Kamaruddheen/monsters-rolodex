@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+
+import { CardList } from './components/card-list/card-list.components';
+
 import './App.css';
 
 class App extends Component {
@@ -6,31 +9,23 @@ class App extends Component {
     super();
 
     this.state = {
-      monsters: [
-        {
-          name: 'Frankenstein',
-          id: 'a1'
-        },
-        {
-          name: 'Dracula',
-          id: 'a2'
-        },
-        {
-          name: 'Zombie',
-          id: 'a3'
-        },
-      ]
+      monsters: [],
+      searchField: ''
     };
+  }
+
+  componentDidMount() {
+    fetch('https://jsonplaceholder.typicode.com/users')
+      .then(repsonse => repsonse.json())
+      .then(users => this.setState({ monsters: users }));
   }
 
   render() {
     return (
-      <div className="App" >
-        {
-          this.state.monsters.map(monster =>
-            <h1 key={monster.id}>{monster.name} </h1>
-          )
-        }
+      <div className="App">
+        <input type="search" placeholder="search monster" onChange={e => this.setState({ searchField: e.target.value })} />
+        < CardList monsters={this.state.monsters}>
+        </CardList>
       </div>
     )
   };
